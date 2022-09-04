@@ -32,7 +32,7 @@
         <td>${movie.genre}</td>
         <td>${movie.director}</td>
         <td><img src="${movie.poster}" alt="movie poster"></td>
-        <td><a href="/favourite/${movie.id}">Add to the favourite movies</a></td>
+        <td><a href="/movie/favourite/${movie.title}/${movie.year}">Add to the favourite movies</a></td>
     </tr>
 </table>
 <p>

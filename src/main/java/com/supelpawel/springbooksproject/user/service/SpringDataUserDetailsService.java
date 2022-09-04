@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.supelpawel.springbooksproject.user.data.CurrentUser;
-import com.supelpawel.springbooksproject.user.data.User;
+import com.supelpawel.springbooksproject.user.model.CurrentUser;
+import com.supelpawel.springbooksproject.user.model.User;
 
 import java.util.HashSet;
 import java.util.Set;

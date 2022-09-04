@@ -1,6 +1,6 @@
 package com.supelpawel.springbooksproject.user.service;
 
-import com.supelpawel.springbooksproject.user.data.User;
+import com.supelpawel.springbooksproject.user.model.User;
 
 import java.util.List;
 import java.util.Optional;

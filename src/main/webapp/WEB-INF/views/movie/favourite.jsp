@@ -21,9 +21,9 @@
 <table style="text-align:center">
     <tr>
         <th>No</th>
-        <th>title</th>
-        <th>Description</th>
-        <th>Category</th>
+        <th>Title</th>
+        <th>Plot</th>
+        <th>Genre</th>
         <th>Director</th>
         <th>Poster</th>
     </tr>
@@ -31,10 +31,10 @@
         <tr>
             <td>${loop.count}</td>
             <td>${movie.title}</td>
-            <td>${movie.description}</td>
-            <td>${movie.category}</td>
+            <td>${movie.plot}</td>
+            <td>${movie.genre}</td>
             <td>${movie.director}</td>
-            <td>${movie.poster}</td>
+            <td><img src="${movie.poster}" alt="movie poster"></td>
         </tr>
     </c:forEach>
 </table>

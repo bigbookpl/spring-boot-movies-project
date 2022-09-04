@@ -2,7 +2,7 @@ package com.supelpawel.springbooksproject.user.service;
 
 import com.supelpawel.springbooksproject.role.data.Role;
 import com.supelpawel.springbooksproject.role.repository.RoleRepository;
-import com.supelpawel.springbooksproject.user.data.User;
+import com.supelpawel.springbooksproject.user.model.User;
 import com.supelpawel.springbooksproject.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +30,18 @@ public class UserServiceImpl implements UserService {
         if (findAll().size() == 0) {
 
             User user1 = new User("user1", "user1");
-            User user2 = new User("user2", "user2");
-            User user3 = new User("user3", "user3");
-
+            Role user1Role = roleRepository.findByName("ROLE_USER");
+            user1.setRoles(new HashSet<>(Arrays.asList(user1Role)));
             saveUser(user1);
+
+            User user2 = new User("user2", "user2");
+            Role user2Role = roleRepository.findByName("ROLE_USER");
+            user2.setRoles(new HashSet<>(Arrays.asList(user2Role)));
             saveUser(user2);
+
+            User user3 = new User("user3", "user3");
+            Role user3Role = roleRepository.findByName("ROLE_USER");
+            user3.setRoles(new HashSet<>(Arrays.asList(user3Role)));
             saveUser(user3);
 
             log.info("Users added to the database");
