@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supelpawel.springbooksproject.movie.data.MovieDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.net.http.HttpResponse;
 @Service
 @Data
 @NoArgsConstructor
+@Slf4j
 public class MovieService {
 
     public MovieDto findByTitleAndYearOfRelease(String title, int year) throws IOException, InterruptedException {
@@ -36,6 +38,8 @@ public class MovieService {
 
 //        MovieDto movieDto = mapper.readValue(response.body(), new TypeReference<>() {
 //        });
+
+        log.info(response.body());
 
         MovieDto movieDto = mapper.readValue(response.body(), MovieDto.class);
 
