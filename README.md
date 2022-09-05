@@ -4,7 +4,7 @@ The program is designed for searching information about movies available in OMDb
 Information about movies is downloaded from the endpoint of OMDb API.
 	
 ## Technologies
-Project is created with:
+The project is created with:
 * Java 11
 * Maven
 * Spring Boot
