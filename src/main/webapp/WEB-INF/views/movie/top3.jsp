@@ -27,7 +27,7 @@
         <th>Director</th>
         <th>Poster</th>
     </tr>
-    <c:forEach items="${top3FavouriteMovies}" var="movie" varStatus="loop">
+    <c:forEach items="${topMovies}" var="movie" varStatus="loop">
         <tr>
             <td>${loop.count}</td>
             <td>${movie.title}</td>

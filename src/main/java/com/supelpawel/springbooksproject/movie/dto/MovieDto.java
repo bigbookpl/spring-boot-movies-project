@@ -10,8 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
+@Table(name = "movies")
 @Entity
 @Data
 @NoArgsConstructor
@@ -34,10 +38,10 @@ public class MovieDto {
 
     private String poster;
 
-    @ManyToOne
-    private User user;
+    @ManyToMany
+    private List<User> users = new ArrayList<>();
 
-    public static MovieDto map(Movie movie) {
+    public static MovieDto from(Movie movie) {
 
         MovieDto movieDto = new MovieDto();
 

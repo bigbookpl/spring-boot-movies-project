@@ -20,6 +20,4 @@ public interface MovieService {
     List<MovieDto> findByUserId(long id);
 
     String findTop3FavouriteMovies(Model model) throws IOException, InterruptedException;
-
-    int findYearByTitle(String title);
 }

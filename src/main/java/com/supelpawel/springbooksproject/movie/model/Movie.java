@@ -1,29 +1,18 @@
 package com.supelpawel.springbooksproject.movie.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @JsonProperty("Title")
     private String title;
@@ -74,11 +63,11 @@ public class Movie {
     @JsonProperty("Metascore")
     private String metaScore;
 
-    private String imbdRating;
+    private String imdbRating;
 
-    private String imbdVotes;
+    private String imdbVotes;
 
-    @JsonProperty("imbdID")
+    @JsonProperty("imdbID")
     private String imbdId;
 
     @JsonProperty("Type")
