@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.supelpawel</groupId>
-    <artifactId>spring-movies-project</artifactId>
+    <artifactId>spring-boot-movies-project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-movies-project</name>
-    <description>spring-movies-project</description>
+    <name>spring-boot-movies-project</name>
+    <description>spring-boot-movies-project</description>
     <properties>
         <java.version>11</java.version>
     </properties>

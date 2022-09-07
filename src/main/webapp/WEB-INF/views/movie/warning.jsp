@@ -2,7 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
-    <title>Warning</title>
+    <title>Favourite list - warning</title>
 </head>
 <body>
 <sec:authorize access="isAuthenticated()">
