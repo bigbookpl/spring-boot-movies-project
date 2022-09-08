@@ -1,6 +1,5 @@
 package com.supelpawel.springbootmoviesproject.movie.controller;
 
-import com.supelpawel.springbootmoviesproject.movie.dto.MovieDto;
 import com.supelpawel.springbootmoviesproject.movie.service.MovieService;
 import com.supelpawel.springbootmoviesproject.user.model.CurrentUser;
 import lombok.AllArgsConstructor;
@@ -29,10 +28,7 @@ public class MovieController {
     @PostMapping("/movie/search")
     public String processFindMovieForm(@RequestParam String title, @RequestParam int year, Model model) throws IOException, InterruptedException {
 
-        MovieDto movieDto = movieService.findByTitleAndYearOfRelease(title, year);
-        model.addAttribute("movie", movieDto);
-
-        return "movie/searched";
+        return movieService.processFindMovieForm(title, year, model);
     }
 
     @GetMapping("/movie/favourite/{title}/{year}")
@@ -49,10 +45,16 @@ public class MovieController {
         return movieService.showFavouriteMovieList(currentUser, model);
     }
 
+    @GetMapping("/movie/delete/{id}")
+    String deleteMovie(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable int id) {
+
+        return movieService.deleteMovieFromFavouriteList(currentUser, id);
+    }
+
     @GetMapping("/movie/top3")
     String showTop3FavouriteMovies(Model model) throws IOException, InterruptedException {
+
         return movieService.findTop3FavouriteMovies(model);
     }
 }
-
 

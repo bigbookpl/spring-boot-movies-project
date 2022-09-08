@@ -19,6 +19,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Data
@@ -49,6 +50,15 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public String processFindMovieForm(String title, int year, Model model) throws IOException, InterruptedException {
+
+        MovieDto movieDto = findByTitleAndYearOfRelease(title, year);
+        model.addAttribute("movie", movieDto);
+
+        return "movie/searched";
+    }
+
+    @Override
     public String addMovieToFavouriteList(String title, int year, CurrentUser currentUser, Model model) throws IOException, InterruptedException {
 
         User user = currentUser.getUser();
@@ -57,7 +67,18 @@ public class MovieServiceImpl implements MovieService {
             return "movie/warning";
         }
 
-        MovieDto movieDto = findByTitleAndYearOfRelease(title, year);
+        MovieDto movieDto;
+
+        if (movieRepository.findMovieByTitle(title) == null) {
+
+            movieDto = findByTitleAndYearOfRelease(title, year);
+
+        } else {
+
+            movieDto = findMovieByTitle(title);
+
+        }
+
         movieDto.getUsers().add(user);
         movieRepository.save(movieDto);
 
@@ -69,6 +90,7 @@ public class MovieServiceImpl implements MovieService {
         model.addAttribute("movies", movies);
 
         return "movie/favourite";
+
     }
 
     @Override
@@ -91,10 +113,51 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public String findTop3FavouriteMovies(Model model) {
 
-        List<MovieDto> topMovies = movieRepository.findTopMovies().subList(0, 3);
+        List<MovieDto> topMovies = movieRepository.findTopMovies();
+
+        if (topMovies.size() > 3) {
+
+            topMovies = topMovies.subList(0, 3);
+        }
+
         model.addAttribute("topMovies", topMovies);
 
         return "movie/top3";
+    }
+
+    @Override
+    public String deleteMovieFromFavouriteList(CurrentUser currentUser, int id) {
+
+        User user = currentUser.getUser();
+
+        List<MovieDto> movies = user.getFavouriteMovies();
+
+        Optional<MovieDto> optMovieToDelete = movies.stream()
+                .filter(m -> m.getId() == id)
+                .findFirst();
+
+        if (optMovieToDelete.isPresent()) {
+
+            MovieDto movieToDelete = optMovieToDelete.get();
+            user.getFavouriteMovies().remove(movieToDelete);
+            userService.update(user);
+
+            movieToDelete.getUsers().remove(user);
+
+            if (movieToDelete.getUsers().size() == 0) {
+
+                movieRepository.delete(movieToDelete);
+
+            } else {
+                movieRepository.save(movieToDelete);
+            }
+        }
+
+        return "redirect:/movie/favourite";
+    }
+
+    public MovieDto findMovieByTitle(String title) {
+        return movieRepository.findMovieByTitle(title);
     }
 
     private String createUniqueApiUrl(String title, int year) {

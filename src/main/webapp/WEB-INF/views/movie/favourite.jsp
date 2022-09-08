@@ -35,6 +35,7 @@
             <td>${movie.genre}</td>
             <td>${movie.director}</td>
             <td><img src="${movie.poster}" alt="movie poster"></td>
+            <td><a href="/movie/delete/${movie.id}">Delete the movie from favourite movies list</a></td>
         </tr>
     </c:forEach>
 </table>

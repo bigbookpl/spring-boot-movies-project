@@ -13,6 +13,8 @@ public interface MovieService {
 
     MovieDto findByTitleAndYearOfRelease(String title, int year) throws IOException, InterruptedException;
 
+    String processFindMovieForm(String title, int year, Model model) throws IOException, InterruptedException;
+
     String addMovieToFavouriteList(String title, int year, CurrentUser currentUser, Model model) throws IOException, InterruptedException;
 
     String showFavouriteMovieList(CurrentUser currentUser, Model model);
@@ -20,4 +22,6 @@ public interface MovieService {
     List<MovieDto> findByUserId(long id);
 
     String findTop3FavouriteMovies(Model model) throws IOException, InterruptedException;
+
+    String deleteMovieFromFavouriteList(CurrentUser currentUser, int id);
 }
