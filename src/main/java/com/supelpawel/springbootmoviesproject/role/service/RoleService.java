@@ -11,13 +11,13 @@ import java.util.Collection;
 @AllArgsConstructor
 public class RoleService {
 
-    private final RoleRepository roleRepository;
+  private final RoleRepository roleRepository;
 
-    public Collection<Role> findAll() {
-        return roleRepository.findAll();
-    }
+  public Collection<Role> findAll() {
+    return roleRepository.findAll();
+  }
 
-    public Role findByName(String name) {
-        return roleRepository.findByName(name);
-    }
+  public Role findByName(String name) {
+    return roleRepository.findByName(name);
+  }
 }

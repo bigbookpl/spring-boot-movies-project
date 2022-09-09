@@ -13,31 +13,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class Security extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public SpringDataUserDetailsService customUserDetailsService() {
-        return new SpringDataUserDetailsService();
-    }
+  @Bean
+  public SpringDataUserDetailsService customUserDetailsService() {
+    return new SpringDataUserDetailsService();
+  }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/login").permitAll()
+        .antMatchers("/movie/**").authenticated()
+        .and()
+        .formLogin().loginPage("/login").defaultSuccessUrl("/movie/search").and()
+        .logout().logoutSuccessUrl("/")
+        .permitAll();
+  }
 
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/movie/**").authenticated()
-                .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/movie/search").and()
-                .logout().logoutSuccessUrl("/")
-                .permitAll();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.userDetailsService(customUserDetailsService()).passwordEncoder(passwordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(customUserDetailsService()).passwordEncoder(passwordEncoder());
+  }
 }

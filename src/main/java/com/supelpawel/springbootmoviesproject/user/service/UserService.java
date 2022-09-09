@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User findByUserName(String username);
+  User findByUserName(String username);
 
-    void saveUser(User user);
+  void saveUser(User user);
 
-    String saveUsers();
+  String saveUsers();
 
-    Optional<User> findById(Long id);
+  Optional<User> findById(Long id);
 
-    List<User> findAll();
+  List<User> findAll();
 
-    void update(User user);
+  void update(User user);
 }

@@ -27,34 +27,29 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String username;
+  private String password;
+  private boolean enabled;
+  @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+  private List<MovieDto> favouriteMovies = new ArrayList<>();
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<Role> roles;
 
-    private String username;
+  public User(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
-    private String password;
-
-    private boolean enabled;
-
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-    private List<MovieDto> favouriteMovies = new ArrayList<>();
-
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "User{" +
+        "username='" + username + '\'' +
+        '}';
+  }
 }
 

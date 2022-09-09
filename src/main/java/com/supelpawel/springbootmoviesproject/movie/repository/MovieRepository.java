@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<MovieDto, Long> {
 
-    @Query(value = "SELECT md FROM MovieDto md ORDER BY md.users.size DESC")
-    List<MovieDto> findTopMovies();
+  @Query(value = "SELECT md FROM MovieDto md ORDER BY md.users.size DESC")
+  List<MovieDto> findTopMovies();
 
-    MovieDto findMovieByTitle(String title);
+  MovieDto findMovieByTitle(String title);
 }

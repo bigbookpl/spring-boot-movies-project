@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Rating {
 
-    @JsonProperty("Source")
-    private String source;
-
-    @JsonProperty("Value")
-    private String value;
+  @JsonProperty("Source")
+  private String source;
+  @JsonProperty("Value")
+  private String value;
 }

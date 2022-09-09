@@ -17,44 +17,39 @@ import java.io.IOException;
 @AllArgsConstructor
 public class MovieController {
 
-    private final MovieService movieService;
+  private final MovieService movieService;
 
-    @GetMapping("/movie/search")
-    public String searchMovieForm() {
+  @GetMapping("/movie/search")
+  public String searchMovieForm() {
+    return "movie/search";
+  }
 
-        return "movie/search";
-    }
+  @PostMapping("/movie/search")
+  public String processFindMovieForm(@RequestParam String title, @RequestParam int year,
+      Model model) throws IOException, InterruptedException {
+    return movieService.processFindMovieForm(title, year, model);
+  }
 
-    @PostMapping("/movie/search")
-    public String processFindMovieForm(@RequestParam String title, @RequestParam int year, Model model) throws IOException, InterruptedException {
+  @GetMapping("/movie/favourite/{title}/{year}")
+  String addMovieToFavouriteList(@PathVariable String title, @PathVariable int year,
+      @AuthenticationPrincipal CurrentUser currentUser,
+      Model model) throws IOException, InterruptedException {
+    return movieService.addMovieToFavouriteList(title, year, currentUser, model);
+  }
 
-        return movieService.processFindMovieForm(title, year, model);
-    }
+  @GetMapping("/movie/favourite")
+  String showFavouriteMovieList(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    return movieService.showFavouriteMovieList(currentUser, model);
+  }
 
-    @GetMapping("/movie/favourite/{title}/{year}")
-    String addMovieToFavouriteList(@PathVariable String title, @PathVariable int year,
-                                   @AuthenticationPrincipal CurrentUser currentUser, Model model) throws IOException, InterruptedException {
+  @GetMapping("/movie/delete/{id}")
+  String deleteMovie(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable int id) {
+    return movieService.deleteMovieFromFavouriteList(currentUser, id);
+  }
 
-        return movieService.addMovieToFavouriteList(title, year, currentUser, model);
-
-    }
-
-    @GetMapping("/movie/favourite")
-    String showFavouriteMovieList(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
-
-        return movieService.showFavouriteMovieList(currentUser, model);
-    }
-
-    @GetMapping("/movie/delete/{id}")
-    String deleteMovie(@AuthenticationPrincipal CurrentUser currentUser, @PathVariable int id) {
-
-        return movieService.deleteMovieFromFavouriteList(currentUser, id);
-    }
-
-    @GetMapping("/movie/top3")
-    String showTop3FavouriteMovies(Model model) throws IOException, InterruptedException {
-
-        return movieService.findTop3FavouriteMovies(model);
-    }
+  @GetMapping("/movie/top3")
+  String showTop3FavouriteMovies(Model model) throws IOException, InterruptedException {
+    return movieService.findTop3FavouriteMovies(model);
+  }
 }
 

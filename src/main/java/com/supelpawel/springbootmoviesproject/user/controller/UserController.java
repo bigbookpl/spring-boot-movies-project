@@ -16,17 +16,16 @@ import java.util.Collection;
 @Slf4j
 public class UserController {
 
-    private final UserService userService;
-    private final RoleService roleService;
+  private final UserService userService;
+  private final RoleService roleService;
 
-    @ModelAttribute("roles")
-    Collection<Role> findAllRoles() {
-        return roleService.findAll();
-    }
+  @ModelAttribute("roles")
+  Collection<Role> findAllRoles() {
+    return roleService.findAll();
+  }
 
-    @GetMapping("/create-users")
-    public String createUsers() {
-
-        return userService.saveUsers();
-    }
+  @GetMapping("/create-users")
+  public String createUsers() {
+    return userService.saveUsers();
+  }
 }

@@ -16,28 +16,25 @@ import java.util.Set;
 @Service
 public class SpringDataUserDetailsService implements UserDetailsService {
 
-    private UserService userService;
+  private UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+  @Autowired
+  public void setUserService(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) {
+    User user = userService.findByUserName(username);
+
+    if (user == null) {
+      throw new UsernameNotFoundException(username);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-
-        User user = userService.findByUserName(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        user.getRoles().forEach(r ->
-                grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
-
-        return new CurrentUser(user.getUsername(),user.getPassword(),
-                grantedAuthorities, user);
-    }
+    Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+    user.getRoles().forEach(r ->
+        grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
+    return new CurrentUser(user.getUsername(), user.getPassword(),
+        grantedAuthorities, user);
+  }
 }

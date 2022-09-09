@@ -11,17 +11,20 @@ import java.util.List;
 @Repository
 public interface MovieService {
 
-    MovieDto findByTitleAndYearOfRelease(String title, int year) throws IOException, InterruptedException;
+  MovieDto findByTitleAndYearOfRelease(String title, int year)
+      throws IOException, InterruptedException;
 
-    String processFindMovieForm(String title, int year, Model model) throws IOException, InterruptedException;
+  String processFindMovieForm(String title, int year, Model model)
+      throws IOException, InterruptedException;
 
-    String addMovieToFavouriteList(String title, int year, CurrentUser currentUser, Model model) throws IOException, InterruptedException;
+  String addMovieToFavouriteList(String title, int year, CurrentUser currentUser, Model model)
+      throws IOException, InterruptedException;
 
-    String showFavouriteMovieList(CurrentUser currentUser, Model model);
+  String showFavouriteMovieList(CurrentUser currentUser, Model model);
 
-    List<MovieDto> findByUserId(long id);
+  List<MovieDto> findByUserId(long id);
 
-    String findTop3FavouriteMovies(Model model) throws IOException, InterruptedException;
+  String findTop3FavouriteMovies(Model model) throws IOException, InterruptedException;
 
-    String deleteMovieFromFavouriteList(CurrentUser currentUser, int id);
+  String deleteMovieFromFavouriteList(CurrentUser currentUser, int id);
 }

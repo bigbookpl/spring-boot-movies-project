@@ -23,36 +23,27 @@ import java.util.List;
 @AllArgsConstructor
 public class MovieDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String title;
+  private String plot;
+  private String genre;
+  private String director;
+  private int year;
+  private String poster;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<User> users = new ArrayList<>();
 
-    private String title;
+  public static MovieDto from(Movie movie) {
+    MovieDto movieDto = new MovieDto();
 
-    private String plot;
-
-    private String genre;
-
-    private String director;
-
-    private int year;
-
-    private String poster;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<User> users = new ArrayList<>();
-
-    public static MovieDto from(Movie movie) {
-
-        MovieDto movieDto = new MovieDto();
-
-        movieDto.setTitle(movie.getTitle());
-        movieDto.setPlot(movie.getPlot());
-        movieDto.setGenre(movie.getGenre());
-        movieDto.setDirector(movie.getDirector());
-        movieDto.setYear(movie.getYear());
-        movieDto.setPoster(movie.getPoster());
-
-        return movieDto;
-    }
+    movieDto.setTitle(movie.getTitle());
+    movieDto.setPlot(movie.getPlot());
+    movieDto.setGenre(movie.getGenre());
+    movieDto.setDirector(movie.getDirector());
+    movieDto.setYear(movie.getYear());
+    movieDto.setPoster(movie.getPoster());
+    return movieDto;
+  }
 }
