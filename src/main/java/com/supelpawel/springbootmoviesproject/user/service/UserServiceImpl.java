@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Override
+  @Transactional
   public String saveUsers() {
 
     if (findAll().size() == 0) {

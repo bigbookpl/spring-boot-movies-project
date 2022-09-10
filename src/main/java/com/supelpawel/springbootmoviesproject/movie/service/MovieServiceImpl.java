@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +57,7 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
+  @Transactional
   public String addMovieToFavouriteList(String title, int year, CurrentUser currentUser,
       Model model) throws IOException, InterruptedException {
     User user = currentUser.getUser();
@@ -106,6 +108,7 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
+  @Transactional
   public String deleteMovieFromFavouriteList(CurrentUser currentUser, int id) {
     User user = currentUser.getUser();
     List<MovieDto> movies = user.getFavouriteMovies();
