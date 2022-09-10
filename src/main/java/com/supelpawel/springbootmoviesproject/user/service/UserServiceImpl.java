@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
   public String saveUsers() {
 
     if (findAll().size() == 0) {
-
       User user1 = new User("user1", "user1");
       Role user1Role = roleRepository.findByName("ROLE_USER");
       user1.setRoles(new HashSet<>(Arrays.asList(user1Role)));
