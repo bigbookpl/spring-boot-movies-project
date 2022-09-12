@@ -17,14 +17,14 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Data
 @AllArgsConstructor
-@Slf4j
 public class MovieServiceImpl implements MovieService {
 
   public static final int NUMBER_OF_TOP_MOVIES = 3;
@@ -44,6 +44,9 @@ public class MovieServiceImpl implements MovieService {
     ObjectMapper mapper = new ObjectMapper();
     Movie movie = mapper.readValue(response.body(), Movie.class);
 
+    if (movie.getTitle() == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found");
+    }
     return MovieDto.from(movie);
   }
 
