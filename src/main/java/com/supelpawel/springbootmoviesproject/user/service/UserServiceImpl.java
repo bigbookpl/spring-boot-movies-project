@@ -4,16 +4,17 @@ import com.supelpawel.springbootmoviesproject.role.data.Role;
 import com.supelpawel.springbootmoviesproject.role.repository.RoleRepository;
 import com.supelpawel.springbootmoviesproject.user.model.User;
 import com.supelpawel.springbootmoviesproject.user.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 @Service
 @AllArgsConstructor
@@ -25,30 +26,27 @@ public class UserServiceImpl implements UserService {
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Override
+  public String showAddUserForm(Model model) {
+    User user = new User();
+
+    model.addAttribute("user", user);
+    return "user/add";
+  }
+
+  @Override
   @Transactional
-  public String saveUsers() {
-
-    if (findAll().size() == 0) {
-      User user1 = new User("user1", "user1");
-      Role user1Role = roleRepository.findByName("ROLE_USER");
-      user1.setRoles(new HashSet<>(Arrays.asList(user1Role)));
-      saveUser(user1);
-
-      User user2 = new User("user2", "user2");
-      Role user2Role = roleRepository.findByName("ROLE_USER");
-      user2.setRoles(new HashSet<>(Arrays.asList(user2Role)));
-      saveUser(user2);
-
-      User user3 = new User("user3", "user3");
-      Role user3Role = roleRepository.findByName("ROLE_USER");
-      user3.setRoles(new HashSet<>(Arrays.asList(user3Role)));
-      saveUser(user3);
-
-      log.info("Users added to the database");
-    } else {
-
-      log.info("Users already in the database");
+  public String processAddUserForm(User user, BindingResult result) {
+    if (result.hasErrors()) {
+      return "user/add";
+    } else if (findByUserName(user.getUsername()) != null) {
+      return "user/warning";
     }
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setEnabled(true);
+    Role userRole = roleRepository.findByName("ROLE_USER");
+    user.setRoles(new HashSet<>(Arrays.asList(userRole)));
+    userRepository.save(user);
     return "redirect:/login";
   }
 
@@ -70,16 +68,6 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void update(User user) {
-    userRepository.save(user);
-  }
-
-  @Override
-  @Transactional
-  public void saveUser(User user) {
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setEnabled(true);
-    Role userRole = roleRepository.findByName("ROLE_USER");
-    user.setRoles(new HashSet<>(Arrays.asList(userRole)));
     userRepository.save(user);
   }
 }

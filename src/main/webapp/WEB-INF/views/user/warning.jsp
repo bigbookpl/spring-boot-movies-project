@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Movie database</title>
+    <title>Add a new user - warning</title>
 </head>
 <body>
-<h1>Welcome to the movie database</h1>
+<h1>Username is already taken - register with different username</h1>
 <p>
     <a href="/login">Login</a>
 </p>

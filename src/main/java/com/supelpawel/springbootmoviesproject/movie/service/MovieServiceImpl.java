@@ -1,26 +1,24 @@
 package com.supelpawel.springbootmoviesproject.movie.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supelpawel.springbootmoviesproject.movie.dto.MovieDto;
 import com.supelpawel.springbootmoviesproject.movie.model.Movie;
 import com.supelpawel.springbootmoviesproject.movie.repository.MovieRepository;
 import com.supelpawel.springbootmoviesproject.user.model.CurrentUser;
 import com.supelpawel.springbootmoviesproject.user.model.User;
 import com.supelpawel.springbootmoviesproject.user.service.UserService;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodyUriSpec;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 @Service
 @Data
@@ -29,30 +27,30 @@ public class MovieServiceImpl implements MovieService {
 
   public static final int NUMBER_OF_TOP_MOVIES = 3;
   public static final String OMDB_API_KEY = "b1d18668";
-  public static final String SPACE = " ";
-  public static final String URL_ENCODED_SPACE = "%20";
   private final MovieRepository movieRepository;
   private final UserService userService;
+  private final WebClient client;
 
   @Override
-  public MovieDto findByTitleAndYearOfRelease(String title, int year)
-      throws IOException, InterruptedException {
-    HttpClient client = HttpClient.newHttpClient();
-    HttpRequest request = HttpRequest.newBuilder().GET().header("accept", "application/json")
-        .uri(URI.create(createUniqueApiUrl(title, year))).build();
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    ObjectMapper mapper = new ObjectMapper();
-    Movie movie = mapper.readValue(response.body(), Movie.class);
+  public MovieDto findByTitleAndYearOfRelease(String title, int year) {
+    RequestBodyUriSpec uriSpec = client.method(HttpMethod.GET);
 
-    if (movie.getTitle() == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found");
-    }
-    return MovieDto.from(movie);
+    uriSpec.uri(uriBuilder -> uriBuilder.path("/")
+        .queryParam("apikey", OMDB_API_KEY)
+        .queryParam("t", title)
+        .queryParam("y", year)
+        .build()
+    );
+    Mono<Movie> movie = uriSpec.exchangeToMono(response -> response.bodyToMono(Movie.class));
+    Movie returnMovie = movie.block();
+
+    Optional.ofNullable(returnMovie.getTitle())
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found"));
+    return MovieDto.from(returnMovie);
   }
 
   @Override
-  public String processFindMovieForm(String title, int year, Model model)
-      throws IOException, InterruptedException {
+  public String processFindMovieForm(String title, int year, Model model) {
     MovieDto movieDto = findByTitleAndYearOfRelease(title, year);
 
     model.addAttribute("movie", movieDto);
@@ -62,7 +60,7 @@ public class MovieServiceImpl implements MovieService {
   @Override
   @Transactional
   public String addMovieToFavouriteList(String title, int year, CurrentUser currentUser,
-      Model model) throws IOException, InterruptedException {
+      Model model) {
     User user = currentUser.getUser();
     MovieDto movieDto;
 
@@ -134,11 +132,5 @@ public class MovieServiceImpl implements MovieService {
 
   public MovieDto findMovieByTitle(String title) {
     return movieRepository.findMovieByTitle(title);
-  }
-
-  private String createUniqueApiUrl(String title, int year) {
-    String uniqueUrl = String.format("https://www.omdbapi.com/?apikey=%s&t=%s&year=%d",
-        OMDB_API_KEY, title, year);
-    return uniqueUrl.replaceAll(SPACE, URL_ENCODED_SPACE);
   }
 }

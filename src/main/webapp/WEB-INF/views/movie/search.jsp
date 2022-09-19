@@ -18,8 +18,8 @@
 </sec:authorize>
 <h1>Search a movie</h1>
 <form method="post">
-        <span>Title: <input type="text" name="title"></span>
-        <span>Year of release: <input type="number" name="year"></span>
+    <span>Title: <input type="text" name="title"></span>
+    <span>Year of release: <input type="number" name="year"></span>
     <input type="submit" value="Search a movie">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>

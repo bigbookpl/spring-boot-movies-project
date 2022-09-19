@@ -2,6 +2,7 @@ package com.supelpawel.springbootmoviesproject.user.model;
 
 import com.supelpawel.springbootmoviesproject.movie.dto.MovieDto;
 import com.supelpawel.springbootmoviesproject.role.data.Role;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,9 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Size(min = 5)
   private String username;
+  @Size(min = 5)
   private String password;
   private boolean enabled;
   @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
